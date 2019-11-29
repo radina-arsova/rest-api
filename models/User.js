@@ -19,8 +19,8 @@ const userSchema = new Schema({
         require: true
     },
 
-    bankBalance: {
-        type: Number
+    balance: {
+        type: Number,
     },
 
     causes: [{ type: ObjectId, ref: "Cause" }]

@@ -11,8 +11,8 @@ module.exports = {
 
     post: {
         register: (req, res, next) => {
-            const { username, password, bankBalance } = req.body;
-            models.User.create({ username, password, bankBalance })
+            const { username, password, balance } = req.body;
+            models.User.create({ username, password, balance })
                 .then((createdUser) => res.send(createdUser))
                 .catch(next)
         },
@@ -54,10 +54,10 @@ module.exports = {
             .catch(next)
     },
 
-    updateBankBalance: (req, res, next) => {
+    updatebalance: (req, res, next) => {
         const id = req.params.id;
-        const { bankBalance } = req.body;
-        models.User.update({ _id: id }, { bankBalance })
+        const { balance } = req.body;
+        models.User.update({ _id: id }, { balance })
             .then((updatedUser) => res.send(updatedUser))
             .catch(next)
     },

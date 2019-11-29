@@ -10,5 +10,7 @@ module.exports = (app) => {
         extended: true
     }));
 
+    app.use(bodyParser.json());
+
     app.use(cookieParser(secret));
 };
