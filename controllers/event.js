@@ -3,7 +3,7 @@ const models = require('../models');
 module.exports = {
     get: (req, res, next) => {
         models.events.find()
-            .then((causes) => res.send(causes))
+            .then((events) => res.send(events))
             .catch(next);
     },
 
@@ -12,14 +12,14 @@ module.exports = {
         const { _id } = req.user;
 
         models.events.create({ description, author: _id })
-            .then((createdCause) => {
+            .then((createdEvent) => {
                 return Promise.all([
-                    models.User.updateOne({ _id }, { $push: { posts: createdCause } }),
-                    models.Cause.findOne({ _id: createdCause._id })
+                    models.User.updateOne({ _id }, { $push: { posts: createdEvent } }),
+                    models.Event.findOne({ _id: createdEvent._id })
                 ]);
             })
-            .then(([modifiedObj, causeObj]) => {
-                res.send(causeObj);
+            .then(([modifiedObj, eventObj]) => {
+                res.send(eventObj);
             })
             .catch(next);
     },
@@ -27,15 +27,15 @@ module.exports = {
     put: (req, res, next) => {
         const id = req.params.id;
         const { description } = req.body;
-        models.Cause.updateOne({ _id: id }, { description, imageUrl, amount })
-            .then((updatedCause) => res.send(updatedCause))
+        models.Event.updateOne({ _id: id }, { description, imageUrl, amount })
+            .then((updatedEvent) => res.send(updatedEvent))
             .catch(next)
     },
 
     delete: (req, res, next) => {
         const id = req.params.id;
-        models.Cause.deleteOne({ _id: id })
-            .then((removedCause) => res.send(removedCause))
+        models.Event.deleteOne({ _id: id })
+            .then((removedEvent) => res.send(removedEvent))
             .catch(next)
     }
 };
