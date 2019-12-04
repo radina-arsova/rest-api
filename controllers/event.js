@@ -2,26 +2,24 @@ const models = require('../models');
 
 module.exports = {
     get: (req, res, next) => {
-        models.events.find()
+        models.Event.find()
             .then((events) => res.send(events))
             .catch(next);
     },
 
     post: (req, res, next) => {
-        const { description } = req.body;
-        const { _id } = req.user;
+        const { title, description, imageUrl } = req.body;
 
-        models.events.create({ description, author: _id })
-            .then((createdEvent) => {
+        models.Event.create({ title, description, imageUrl, guests: 0 })
+            .then((createdCause) => {
                 return Promise.all([
-                    models.User.updateOne({ _id }, { $push: { posts: createdEvent } }),
-                    models.Event.findOne({ _id: createdEvent._id })
+                    models.User.updateOne({ _id }, { $push: { causes: createdCause } }),
+                    models.Cause.findOne({ _id: createdCause._id })
                 ]);
-            })
-            .then(([modifiedObj, eventObj]) => {
+            }).then(([modifiedObj, eventObj]) => {
                 res.send(eventObj);
             })
-            .catch(next);
+            .catch(next)
     },
 
     put: (req, res, next) => {

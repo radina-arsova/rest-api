@@ -1,28 +1,28 @@
 const models = require('../models');
+const { auth } = require('../utils');
 
 module.exports = {
     get: (req, res, next) => {
-        models.events.find()
+        models.Cause.find()
             .then((causes) => res.send(causes))
             .catch(next);
     },
 
     post: (req, res, next) => {
-        const { description } = req.body;
-        const { _id } = req.user;
+        const { title, description, imageUrl } = req.body;
 
-        models.events.create({ description, author: _id })
+        models.Cause.create({ title, description, imageUrl, amount: 0 })
             .then((createdCause) => {
                 return Promise.all([
-                    models.User.updateOne({ _id }, { $push: { posts: createdCause } }),
+                    models.User.updateOne({ _id }, { $push: { causes: createdCause } }),
                     models.Cause.findOne({ _id: createdCause._id })
                 ]);
-            })
-            .then(([modifiedObj, causeObj]) => {
+            }).then(([modifiedObj, causeObj]) => {
                 res.send(causeObj);
             })
-            .catch(next);
+            .catch(next)
     },
+
 
     put: (req, res, next) => {
         const id = req.params.id;

@@ -4,6 +4,8 @@ const { auth } = require('../utils');
 
 router.get('/', controllers.cause.get);
 
+router.post('/create', controllers.cause.post);
+
 router.put('/:id', auth(), controllers.cause.put);
 
 router.delete('/:id', auth(), controllers.cause.delete);

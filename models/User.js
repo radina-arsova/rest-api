@@ -23,7 +23,8 @@ const userSchema = new Schema({
         type: Number,
     },
 
-    causes: [{ type: ObjectId, ref: "Cause" }]
+    causes: [{ type: ObjectId, ref: "Cause" }],
+    events: [{ type: ObjectId, ref: "Event" }]
 
 });
 
