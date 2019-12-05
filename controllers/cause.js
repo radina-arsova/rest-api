@@ -9,9 +9,9 @@ module.exports = {
     },
 
     post: (req, res, next) => {
-        const { title, description, imageUrl } = req.body;
+        const { title, description, imageUrl, name } = req.body;
 
-        models.Cause.create({ title, description, imageUrl, amount: 0 })
+        models.Cause.create({ title, description, imageUrl, name, amount: 0 })
             .then((createdCause) => {
                 return Promise.all([
                     models.User.updateOne({ _id }, { $push: { causes: createdCause } }),
@@ -23,11 +23,19 @@ module.exports = {
             .catch(next)
     },
 
+    donate: (req, res, next) => {
+        const id = req.params.id;
+        const { amount } = req.body;
+        models.Cause.updateOne({ _id: id }, { amount })
+            .then((updatedCause) => res.send(updatedCause))
+            .catch(next)
+    },
+
 
     put: (req, res, next) => {
         const id = req.params.id;
         const { description } = req.body;
-        models.Cause.updateOne({ _id: id }, { description, imageUrl, amount })
+        models.Cause.updateOne({ _id: id }, { description, imageUrl })
             .then((updatedCause) => res.send(updatedCause))
             .catch(next)
     },

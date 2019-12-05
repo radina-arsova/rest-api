@@ -5,7 +5,12 @@ const { String, Number, Boolean, ObjectId } = Schema.Types;
 
 const CauseSchema = new Schema({
 
-    title:{
+    title: {
+        type: String,
+        required: true
+    },
+
+    name: {
         type: String,
         required: true
     },
