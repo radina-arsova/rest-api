@@ -19,9 +19,10 @@ const EventSchema = new Schema({
         type: String
     },
 
-    guests: {
-        type: Number
-    },
+    guests: [{
+        type: ObjectId,
+        ref: "User"
+    }],
 
     author: {
         type: ObjectId,

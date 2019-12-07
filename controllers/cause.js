@@ -10,8 +10,9 @@ module.exports = {
 
     post: (req, res, next) => {
         const { title, description, imageUrl, name } = req.body;
+        const { _id } = req.user;
 
-        models.Cause.create({ title, description, imageUrl, name, amount: 0 })
+        models.Cause.create({ title, description, imageUrl, name, amount: 0, author: _id })
             .then((createdCause) => {
                 return Promise.all([
                     models.User.updateOne({ _id }, { $push: { causes: createdCause } }),

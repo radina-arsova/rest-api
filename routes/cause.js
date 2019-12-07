@@ -4,9 +4,9 @@ const { auth } = require('../utils');
 
 router.get('/', controllers.cause.get);
 
-router.post('/create', controllers.cause.post);
+router.post('/create', auth(), controllers.cause.post);
 
-router.post('/donate/:id', controllers.cause.donate);
+router.put('/donate/:id', controllers.cause.donate);
 
 router.put('/:id', auth(), controllers.cause.put);
 
