@@ -7,6 +7,13 @@ module.exports = {
             .catch(next);
     },
 
+    getUsersEvents: (req, res, next) => {
+        const userId=req.user.id;
+        models.Event.find({author: userId}).then(events => {
+            res.send(events);
+        })
+    },
+
     post: (req, res, next) => {
         const { title, description, imageUrl } = req.body;
         const { _id } = req.user;

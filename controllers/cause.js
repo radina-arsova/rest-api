@@ -8,6 +8,20 @@ module.exports = {
             .catch(next);
     },
 
+    find: (req, res, next) => {
+        const id = req.params.id;
+        models.Cause.findById(id)
+            .then((cause) => res.send(cause))
+            .catch(next);
+    },
+
+    getUsersCauses: (req, res, next) => {
+        const userId=req.user.id;
+        models.Cause.find({author: userId}).then(causes => {
+            res.send(causes);
+        })
+    },
+
     post: (req, res, next) => {
         const { title, description, imageUrl, name } = req.body;
         const { _id } = req.user;
@@ -26,9 +40,17 @@ module.exports = {
 
     donate: (req, res, next) => {
         const id = req.params.id;
-        const { amount } = req.body;
+        const { amount, value } = req.body;
+        const userId = req.user.id;
         models.Cause.updateOne({ _id: id }, { amount })
             .then((updatedCause) => res.send(updatedCause))
+            .then(() => {
+                models.User.findById(userId).then((user)=>{
+                    let bal=user.balance-value;
+                    models.User.updateOne({_id: userId}, {balance: bal})
+                    .then(updatedUser=>console.log(updatedUser))
+                })
+            })
             .catch(next)
     },
 

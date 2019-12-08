@@ -23,6 +23,10 @@ const userSchema = new Schema({
         type: Number,
     },
 
+    imageUrl: {
+        type: String,
+    },
+
     causes: [{ type: ObjectId, ref: "Cause" }],
     events: [{ type: ObjectId, ref: "Event" }]
 

@@ -6,6 +6,8 @@ router.get('/', controllers.event.get);
 
 router.get('/check-guests/:id', auth(), controllers.event.checkGuests)
 
+router.get('/user', auth(), controllers.event.getUsersEvents)
+
 router.post('/create', auth(), controllers.event.post);
 
 router.put('/will-come/:id', auth(), controllers.event.come);
