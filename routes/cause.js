@@ -14,6 +14,6 @@ router.put('/donate/:id', auth(), controllers.cause.donate);
 
 router.put('/:id', auth(), controllers.cause.put);
 
-router.delete('/:id', auth(), controllers.cause.delete);
+router.delete('/delete/:id', auth(), controllers.cause.delete);
 
 module.exports = router;

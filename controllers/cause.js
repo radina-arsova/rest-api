@@ -65,6 +65,7 @@ module.exports = {
 
     delete: (req, res, next) => {
         const id = req.params.id;
+        console.log(id);
         models.Cause.deleteOne({ _id: id })
             .then((removedCause) => res.send(removedCause))
             .catch(next)
