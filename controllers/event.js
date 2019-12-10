@@ -8,11 +8,19 @@ module.exports = {
     },
 
     getUsersEvents: (req, res, next) => {
-        const userId=req.user.id;
-        models.Event.find({author: userId}).then(events => {
+        const userId = req.user.id;
+        models.Event.find({ author: userId }).then(events => {
             res.send(events);
         })
     },
+
+    find: (req, res, next) => {
+        const id = req.params.id;
+        models.Event.findById(id)
+            .then((event) => res.send(event))
+            .catch(next);
+    },
+
 
     post: (req, res, next) => {
         const { title, description, imageUrl } = req.body;
@@ -33,28 +41,28 @@ module.exports = {
     come: (req, res, next) => {
         const id = req.params.id;
         const { _id } = req.user;
-        models.Event.findById(id).then(event=>{
-            const eventGuests=event.guests;
+        models.Event.findById(id).then(event => {
+            const eventGuests = event.guests;
             eventGuests.push(_id);
             models.Event.updateOne({ _id: id }, { guests: eventGuests })
-            .then((updatedEvent) => res.send(updatedEvent))
-            .catch(next)
+                .then((updatedEvent) => res.send(updatedEvent))
+                .catch(next)
         })
     },
 
     checkGuests: (req, res, next) => {
-        const {id}=req.params;
+        const { id } = req.params;
         const { _id } = req.user;
 
-        models.Event.findById(id).then((event)=>{
-            res.send(event.guests.find(id=>id=_id));
+        models.Event.findById(id).then((event) => {
+            res.send(event.guests.find(id => id = _id));
         })
     },
 
-    put: (req, res, next) => {
+    edit: (req, res, next) => {
         const id = req.params.id;
-        const { description } = req.body;
-        models.Event.updateOne({ _id: id }, { description, imageUrl, amount })
+        const { title, description, imageUrl } = req.body;
+        models.Event.updateOne({ _id: id }, { title, description, imageUrl })
             .then((updatedEvent) => res.send(updatedEvent))
             .catch(next)
     },
@@ -64,5 +72,12 @@ module.exports = {
         models.Event.deleteOne({ _id: id })
             .then((removedEvent) => res.send(removedEvent))
             .catch(next)
+    },
+
+    getGuests: (req, res, next) => {
+        const { id } = req.params;
+        models.Event.findById(id).then((event)=>{
+            res.send(event.guests);
+        })
     }
 };

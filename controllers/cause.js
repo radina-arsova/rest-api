@@ -1,5 +1,6 @@
 const models = require('../models');
 const { auth } = require('../utils');
+const {ObjectId} = require('mongodb');
 
 module.exports = {
     get: (req, res, next) => {
@@ -8,18 +9,18 @@ module.exports = {
             .catch(next);
     },
 
-    find: (req, res, next) => {
-        const id = req.params.id;
-        models.Cause.findById(id)
-            .then((cause) => res.send(cause))
-            .catch(next);
-    },
-
     getUsersCauses: (req, res, next) => {
         const userId=req.user.id;
         models.Cause.find({author: userId}).then(causes => {
             res.send(causes);
         })
+    },
+
+    find: (req, res, next) => {
+        const id = req.params.id;
+        models.Cause.findById(id)
+            .then((cause) => res.send(cause))
+            .catch(next);
     },
 
     post: (req, res, next) => {
@@ -55,17 +56,16 @@ module.exports = {
     },
 
 
-    put: (req, res, next) => {
+    edit: (req, res, next) => {
         const id = req.params.id;
-        const { description } = req.body;
-        models.Cause.updateOne({ _id: id }, { description, imageUrl })
+        const { name, title, description, imageUrl } = req.body;
+        models.Cause.updateOne({ _id: id }, { name, title, description, imageUrl })
             .then((updatedCause) => res.send(updatedCause))
             .catch(next)
     },
 
     delete: (req, res, next) => {
         const id = req.params.id;
-        console.log(id);
         models.Cause.deleteOne({ _id: id })
             .then((removedCause) => res.send(removedCause))
             .catch(next)
