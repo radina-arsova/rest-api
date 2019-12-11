@@ -18,8 +18,6 @@ router.post('/create', auth(), controllers.event.post);
 
 router.get('/:id', controllers.event.find);
 
-router.delete('/:id', auth(), controllers.event.delete);
-
 router.get('/', controllers.event.get);
 
 module.exports = router;

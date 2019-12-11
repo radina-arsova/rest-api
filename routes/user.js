@@ -2,7 +2,11 @@ const controllers = require('../controllers/');
 const router = require('express').Router();
 const { auth } = require('../utils');
 
-router.get('/', auth(), controllers.user.get);
+router.put('/add', auth(), controllers.user.updatebalance);
+
+router.put('/edit', auth(), controllers.user.updateUser);
+
+router.delete('/delete', auth(), controllers.user.delete);
 
 router.post('/register', controllers.user.post.register);
 
@@ -10,8 +14,6 @@ router.post('/login', controllers.user.post.login);
 
 router.post('/logout', controllers.user.post.logout);
 
-router.put('/:id', controllers.user.updateUser);
-
-router.delete('/:id', controllers.user.delete);
+router.get('/', auth(), controllers.user.get);
 
 module.exports = router;
