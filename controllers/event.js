@@ -27,10 +27,10 @@ module.exports = {
         const { _id } = req.user;
 
         models.Event.create({ title, description, imageUrl, guests: [], author: _id })
-            .then((createdCause) => {
+            .then((createdEvent) => {
                 return Promise.all([
-                    models.User.updateOne({ _id }, { $push: { causes: createdCause } }),
-                    models.Event.findOne({ _id: createdCause._id })
+                    models.User.updateOne({ _id }, { $push: { events: createdEvent } }),
+                    models.Event.findOne({ _id: createdEvent._id })
                 ]);
             }).then(([modifiedObj, eventObj]) => {
                 res.send(eventObj);

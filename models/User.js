@@ -44,6 +44,7 @@ userSchema.pre('save', function (next) {
     if (this.isModified('password')) {
         bcrypt.genSalt(saltRounds, (err, salt) => {
             bcrypt.hash(this.password, salt, (err, hash) => {
+                console.log(this.password)
                 if (err) { next(err); return }
                 this.password = hash;
                 next();

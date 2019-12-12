@@ -46,23 +46,21 @@ module.exports = {
     updateUser: (req, res, next) => {
         const id = req.user.id;
         const { username } = req.body;
-        let {password} = req.body;
-        // bcrypt.genSalt(saltRounds, (err, salt) => {
-        //     bcrypt.hash(password, salt, (err, hash) => {
-        //         if (err) { next(err); return }
-        //         password = hash;
-        //         next();
-        //     });
-        // })
+        let { password } = req.body;
+
         if (password === '') {
             models.User.updateOne({ _id: id }, { username })
                 .then((updatedUser) => res.send(updatedUser))
                 .catch(next)
         }
         else {
-            models.User.updateOne({ _id: id }, { username, password })
+            bcrypt.hash(password, saltRounds).then(function(hash) {
+                password = hash;
+            }).then(()=>{
+                models.User.updateOne({ _id: id }, { username, password })
                 .then((updatedUser) => res.send(updatedUser))
                 .catch(next)
+            });
         }
     },
 
